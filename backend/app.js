@@ -13,7 +13,7 @@ app.listen(porta, () => {
     console.log(`Servidor rodando em: http://localhost:${porta}`)
 })
 
-// ================= CADASTRO USUÁRIOS ======================
+// ================= CADASTRO USUÁRIOS ==============================================================================================================
 //Mostrar
 app.get('/mostrar', async (req, res) => {
     try {
@@ -76,7 +76,43 @@ app.delete('/deletar', async (req, res) => {
 
 })
 
-// ================= CADASTRO ANIMAIS ==================
+// ================= LOGIN ================================================================================================
+
+// Mostrar
+app.get('/mostrarLogin', async (req, res) => {
+    try {
+        const [resultado] = await pool.query(`SELECT * FROM login`)
+        res.send(resultado)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// Inserir
+app.put('/atualizarLogin', async (req, res) => {
+    try {
+        const { id_login, email, senha } = req.body
+
+        const hash = crypto.createHash("sha256").update(senha.trim()).digest("base64")
+
+        const sql = `UPDATE login SET email = ?, senha = ? WHERE id_login = ?`
+
+        const [resultado] = await pool.query(sql, [email, hash, id_login])
+
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Login atualizado com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao atualizar login!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// ================= CADASTRO ANIMAIS ============================================================================================================
 
 // Mostrar
 app.get('/mostrarAnimal', async (req, res) => {
@@ -145,7 +181,7 @@ app.delete('/deletarAnimal', async (req, res) => {
 })
 
 
-// ================= CADASTRO ONG ==================
+// ================= CADASTRO ONG ===================================================================================================================================
 
 // Mostrar
 app.get('/mostrarOng', async (req, res) => {
@@ -211,5 +247,150 @@ app.delete('/deletarOng', async (req, res) => {
         }
     } catch (error) {
         console.log(error)
+    }
+})
+
+
+// ================= CADASTRO DICAS ===================================================================================
+
+// Mostrar
+app.get('/mostrarDicas', async (req, res) => {
+    try {
+        const [resultado] = await pool.query(`SELECT * FROM dicas`)
+        res.send(resultado)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// Inserir
+app.post('/inserirDica', async (req, res) => {
+    try {
+        const { id_usuario, titulo, conteudo, categoria, imagem, data_publicacao } = req.body
+
+        const sql = `INSERT INTO dicas (id_usuario, titulo, conteudo, categoria, imagem, data_publicacao) VALUES (?, ?, ?, ?, ?, ?)`
+
+        const [resultado] = await pool.query(sql, [id_usuario, titulo, conteudo, categoria, imagem, data_publicacao])
+
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Dica cadastrada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao cadastrar dica!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// Atualizar
+app.put('/atualizarDica', async (req, res) => {
+    try {
+        const { id_dica, id_usuario, titulo, conteudo, categoria, imagem, data_publicacao } = req.body
+
+        const sql = `UPDATE dicas SET id_usuario = ?, titulo = ?, conteudo = ?, categoria = ?, imagem = ?, data_publicacao = ? WHERE id_dica = ?`
+        const [resultado] = await pool.query(sql, [id_usuario, titulo, conteudo, categoria, imagem, data_publicacao, id_dica])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Dica atualizada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao atualizar dica!" })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+app.delete('/deletarAnimal', async (req, res) => {
+    try {
+        const { id_animal } = req.body
+        const [resultado] = await pool.query(`DELETE FROM animais WHERE id_animal = ?`,[id_animal])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Animal deletado com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao deletar animal!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// ================= DOACAO =========================================================================================================================================
+
+// Mostrar
+app.get('/mostrarDoacao', async (req, res) => {
+    try {
+        const [resultado] = await pool.query(`SELECT * FROM doacao`)
+        res.send(resultado)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// Inserir
+app.post('/inserirDoacao', async (req, res) => {
+    try {
+        const { id_ong, tipo_doacao, descricao, data_cadastro } = req.body
+        const sql = ` INSERT INTO doacao (id_ong, tipo_doacao, descricao, data_cadastro) VALUES (?, ?, ?, ?) `
+
+        const [resultado] = await pool.query(sql, [
+            id_ong, tipo_doacao, descricao, data_cadastro
+        ])
+
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Doação cadastrada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao cadastrar doação!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// Atualizar
+app.put('/atualizarDoacao', async (req, res) => {
+    try {
+        const { id_doacao, id_ong, tipo_doacao, descricao, data_cadastro } = req.body
+
+        const sql = ` UPDATE doacao SET id_ong = ?, tipo_doacao = ?, descricao = ?, data_cadastro = ? WHERE id_doacao = ? `
+
+        const [resultado] = await pool.query(sql, [
+            id_ong, tipo_doacao, descricao, data_cadastro, id_doacao
+        ])
+
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Doação atualizada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao atualizar doação!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
+    }
+})
+
+// Deletar
+app.delete('/deletarDoacao', async (req, res) => {
+    try {
+        const { id_doacao } = req.body
+
+        const [resultado] = await pool.query(`DELETE FROM doacao WHERE id_doacao = ?`, [id_doacao])
+
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Doação deletada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao deletar doação!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error.message)
     }
 })
