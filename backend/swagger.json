@@ -1,0 +1,312 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Backend - Projeto XYZ",
+    "version": "1.0.0",
+    "description": "Documentação completa do sistema de adoção e gerenciamento de animais, ONGs, dicas e doações."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor Local"
+    }
+  ],
+  "tags": [
+    { "name": "Usuários", "description": "Gerenciamento de contas de usuários" },
+    { "name": "Autenticação", "description": "Sistema de Login" },
+    { "name": "Animais", "description": "Gerenciamento de pets para adoção" },
+    { "name": "ONGs", "description": "Gerenciamento das organizações" },
+    { "name": "Dicas", "description": "Postagens de dicas e informações" },
+    { "name": "Doações", "description": "Registro de necessidades de doação" }
+  ],
+  "paths": {
+    "/mostrar": {
+      "get": {
+        "tags": ["Usuários"],
+        "summary": "Listar todos os usuários",
+        "responses": { "200": { "description": "Lista de usuários", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Usuario" } } } } } }
+      }
+    },
+    "/inserir": {
+      "post": {
+        "tags": ["Usuários"],
+        "summary": "Cadastrar novo usuário",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UsuarioInput" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/atualizar": {
+      "put": {
+        "tags": ["Usuários"],
+        "summary": "Atualizar dados do usuário",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Usuario" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/deletar": {
+      "delete": {
+        "tags": ["Usuários"],
+        "summary": "Deletar usuário",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "id_usuario": { "type": "integer" } } } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": ["Autenticação"],
+        "summary": "Realizar login",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "senha": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "Retorna o usuário se logado" } }
+      }
+    },
+    "/mostrarAnimal": {
+      "get": {
+        "tags": ["Animais"],
+        "summary": "Listar todos os animais",
+        "responses": { "200": { "description": "Lista de animais" } }
+      }
+    },
+    "/inserirAnimal": {
+      "post": {
+        "tags": ["Animais"],
+        "summary": "Cadastrar novo animal",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AnimalInput" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/atualizarAnimal": {
+      "put": {
+        "tags": ["Animais"],
+        "summary": "Atualizar dados do animal",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Animal" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/deletarAnimal": {
+      "delete": {
+        "tags": ["Animais"],
+        "summary": "Deletar animal",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "id_animal": { "type": "integer" } } } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/mostrarOng": {
+      "get": {
+        "tags": ["ONGs"],
+        "summary": "Listar todas as ONGs",
+        "responses": { "200": { "description": "Lista de ONGs" } }
+      }
+    },
+    "/inserirOng": {
+      "post": {
+        "tags": ["ONGs"],
+        "summary": "Cadastrar nova ONG",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/OngInput" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/atualizarOng": {
+      "put": {
+        "tags": ["ONGs"],
+        "summary": "Atualizar dados da ONG",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Ong" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/deletarOng": {
+      "delete": {
+        "tags": ["ONGs"],
+        "summary": "Deletar ONG",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "id_ong": { "type": "integer" } } } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/mostrarDicas": {
+      "get": {
+        "tags": ["Dicas"],
+        "summary": "Listar todas as dicas",
+        "responses": { "200": { "description": "Lista de dicas" } }
+      }
+    },
+    "/inserirDica": {
+      "post": {
+        "tags": ["Dicas"],
+        "summary": "Cadastrar nova dica",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DicaInput" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/atualizarDica": {
+      "put": {
+        "tags": ["Dicas"],
+        "summary": "Atualizar dica",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Dica" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/mostrarDoacao": {
+      "get": {
+        "tags": ["Doações"],
+        "summary": "Listar todas as doações",
+        "responses": { "200": { "description": "Lista de doações" } }
+      }
+    },
+    "/inserirDoacao": {
+      "post": {
+        "tags": ["Doações"],
+        "summary": "Inserir nova doação",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DoacaoInput" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/atualizarDoacao": {
+      "put": {
+        "tags": ["Doações"],
+        "summary": "Atualizar doação",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Doacao" } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    },
+    "/deletarDoacao": {
+      "delete": {
+        "tags": ["Doações"],
+        "summary": "Deletar doação",
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "id_doacao": { "type": "integer" } } } } } },
+        "responses": { "200": { "description": "Sucesso" } }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Usuario": {
+        "type": "object",
+        "properties": {
+          "id_usuario": { "type": "integer" },
+          "nome": { "type": "string" },
+          "email": { "type": "string" },
+          "cep": { "type": "string" },
+          "cpf": { "type": "string" },
+          "telefone": { "type": "string" },
+          "data_nascimento": { "type": "string" },
+          "senha": { "type": "string" }
+        }
+      },
+      "UsuarioInput": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "email": { "type": "string" },
+          "cep": { "type": "string" },
+          "cpf": { "type": "string" },
+          "telefone": { "type": "string" },
+          "data_nascimento": { "type": "string" },
+          "senha": { "type": "string" }
+        }
+      },
+      "Animal": {
+        "type": "object",
+        "properties": {
+          "id_animal": { "type": "integer" },
+          "id_ong": { "type": "integer" },
+          "nome": { "type": "string" },
+          "especie": { "type": "string" },
+          "raca": { "type": "string" },
+          "porte": { "type": "string" },
+          "idade": { "type": "string" },
+          "sexo": { "type": "string" },
+          "descricao": { "type": "string" },
+          "status": { "type": "string" },
+          "imagem": { "type": "string" },
+          "ong": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" }
+        }
+      },
+      "AnimalInput": {
+        "type": "object",
+        "properties": {
+          "id_ong": { "type": "integer" },
+          "nome": { "type": "string" },
+          "especie": { "type": "string" },
+          "raca": { "type": "string" },
+          "porte": { "type": "string" },
+          "idade": { "type": "string" },
+          "sexo": { "type": "string" },
+          "descricao": { "type": "string" },
+          "status": { "type": "string" },
+          "imagem": { "type": "string" },
+          "ong": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" }
+        }
+      },
+      "Ong": {
+        "type": "object",
+        "properties": {
+          "id_ong": { "type": "integer" },
+          "nome": { "type": "string" },
+          "telefone": { "type": "string" },
+          "endereco": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" },
+          "pix": { "type": "string" },
+          "trabalho_ofe": { "type": "string" }
+        }
+      },
+      "OngInput": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "telefone": { "type": "string" },
+          "endereco": { "type": "string" },
+          "cidade": { "type": "string" },
+          "estado": { "type": "string" },
+          "pix": { "type": "string" },
+          "trabalho_ofe": { "type": "string" }
+        }
+      },
+      "Dica": {
+        "type": "object",
+        "properties": {
+          "id_dica": { "type": "integer" },
+          "id_usuario": { "type": "integer" },
+          "titulo": { "type": "string" },
+          "conteudo": { "type": "string" },
+          "categoria": { "type": "string" },
+          "imagem": { "type": "string" },
+          "data_publicacao": { "type": "string" }
+        }
+      },
+      "DicaInput": {
+        "type": "object",
+        "properties": {
+          "id_usuario": { "type": "integer" },
+          "titulo": { "type": "string" },
+          "conteudo": { "type": "string" },
+          "categoria": { "type": "string" },
+          "imagem": { "type": "string" },
+          "data_publicacao": { "type": "string" }
+        }
+      },
+      "Doacao": {
+        "type": "object",
+        "properties": {
+          "id_doacao": { "type": "integer" },
+          "id_ong": { "type": "integer" },
+          "tipo_doacao": { "type": "string" },
+          "descricao": { "type": "string" },
+          "data_cadastro": { "type": "string" }
+        }
+      },
+      "DoacaoInput": {
+        "type": "object",
+        "properties": {
+          "id_ong": { "type": "integer" },
+          "tipo_doacao": { "type": "string" },
+          "descricao": { "type": "string" },
+          "data_cadastro": { "type": "string" }
+        }
+      }
+    }
+  }
+}
