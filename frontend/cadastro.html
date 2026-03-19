@@ -40,14 +40,14 @@
                 <h2>Criar conta</h2>
                 <p>Faça parte da nossa rede de proteção animal</p>
 
-                <form>
-                    <input type="text" placeholder="Nome completo">
-                    <input type="email" placeholder="E-mail">
-                    <input type="text" placeholder="Endereço">
-                    <input type="text" placeholder="CPF">
-                    <input type="text" placeholder="Telefone">
-                    <input type="date">
-                    <input type="password" placeholder="Senha">
+                <form id="formCadastro">
+                    <input id="nome" type="text" placeholder="Nome completo" required>
+                    <input id="email" type="email" placeholder="E-mail" required>
+                    <input id="cep" type="text" placeholder="Endereço" required>
+                    <input id="cpf" type="text" placeholder="CPF" required>
+                    <input id="telefone" type="text" placeholder="Telefone" required>
+                    <input id="data_nascimento" type="date" required>
+                    <input id="senha" type="password" placeholder="Senha" required>
 
                     <button type="submit" class="botao-principal">Cadastrar</button>
                 </form>
@@ -64,8 +64,39 @@
         </div>
     </section>
 
+    <script>
+        document.getElementById("formCadastro").addEventListener("submit", async function (e) {
+            e.preventDefault()
+
+            const dados = {
+                nome: document.getElementById("nome").value,
+                email: document.getElementById("email").value,
+                cep: document.getElementById("cep").value,
+                cpf: document.getElementById("cpf").value,
+                telefone: document.getElementById("telefone").value,
+                data_nascimento: document.getElementById("data_nascimento").value,
+                senha: document.getElementById("senha").value
+            }
+
+            try {
+                const resposta = await fetch("http://localhost:3000/inserir", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }, body: JSON.stringify(dados)
+                })
+
+                const resultado = await resposta.json()
+                alert(resultado.resposta)
+                window.location.href = "acesso.html"
+
+            } catch (erro) {
+                console.log(erro)
+                alert("Erro ao conectar com o servidor")
+            }
+        })
+    </script>
+
 </body>
 
 </html>
-
-
