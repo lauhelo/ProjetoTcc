@@ -77,33 +77,25 @@ app.delete('/deletar', async (req, res) => {
 })
 
 // ================= LOGIN ================================================================================================
-
-// Mostrar
-app.get('/mostrarLogin', async (req, res) => {
+app.post('/login', async (req, res) => {
     try {
-        const [resultado] = await pool.query(`SELECT * FROM login`)
-        res.send(resultado)
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error.message)
-    }
-})
+        const { email, senha } = req.body
 
-// Inserir
-app.put('/atualizarLogin', async (req, res) => {
-    try {
-        const { id_login, email, senha } = req.body
+        const hash = crypto.createHash("sha256")
+            .update(senha.trim())
+            .digest("base64")
 
-        const hash = crypto.createHash("sha256").update(senha.trim()).digest("base64")
+        const sql = `
+        SELECT * FROM cadastro 
+        WHERE email = ? AND senha = ?
+        `
 
-        const sql = `UPDATE login SET email = ?, senha = ? WHERE id_login = ?`
+        const [resultado] = await pool.query(sql, [email, hash])
 
-        const [resultado] = await pool.query(sql, [email, hash, id_login])
-
-        if (resultado.affectedRows === 1) {
-            res.json({ resposta: "Login atualizado com sucesso!" })
+        if (resultado.length > 0) {
+            res.json({ usuario: resultado })
         } else {
-            res.json({ resposta: "Erro ao atualizar login!" })
+            res.json({ usuario: null })
         }
 
     } catch (error) {
