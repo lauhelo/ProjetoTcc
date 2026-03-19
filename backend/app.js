@@ -13,7 +13,7 @@ app.listen(porta, () => {
     console.log(`Servidor rodando em: http://localhost:${porta}`)
 })
 
-// ================= CADASTRO ======================
+// ================= CADASTRO USUÁRIOS ======================
 //Mostrar
 app.get('/mostrar', async (req, res) => {
     try {
@@ -74,4 +74,142 @@ app.delete('/deletar', async (req, res) => {
         console.log(error)
     }
 
+})
+
+// ================= CADASTRO ANIMAIS ==================
+
+// Mostrar
+app.get('/mostrarAnimal', async (req, res) => {
+    try {
+        const [resultado] = await pool.query(`SELECT * FROM animais`)
+        res.send(resultado)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("erro no servidor")
+    }
+})
+
+// Inserir
+app.post('/inserirAnimal', async (req, res) => {
+    try {
+        const { id_ong, nome, especie, raca, porte, idade, sexo, descricao, status, imagem, ong, cidade, estado } = req.body
+        const sql = ` INSERT INTO animais (id_ong, nome, especie, raca, porte, idade, sexo, descricao, status, imagem, ong, cidade, estado)  
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+        const [resultado] = await pool.query(sql, [ id_ong, nome, especie, raca, porte, idade, sexo, descricao, status, imagem, ong, cidade, estado])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Animal cadastrado com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao cadastrar animal!" })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("erro no servidor")
+    }
+})
+
+// Atualizar
+app.put('/atualizarAnimal', async (req, res) => {
+    try {
+        const {id_animal, id_ong, nome, especie, raca, porte, idade, sexo, descricao, status, imagem, ong, cidade, estado} = req.body
+        const sql = `UPDATE animais SET id_ong = ?, nome = ?, especie = ?, raca = ?, porte = ?, idade = ?, sexo = ?, descricao = ?,
+         status = ?, imagem = ?, ong = ?, cidade = ?, estado = ? WHERE id_animal = ?`
+
+        const [resultado] = await pool.query(sql, [
+            id_ong, nome, especie, raca, porte, idade, sexo, descricao, status, imagem, ong, cidade, estado, id_animal
+        ])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Animal atualizado com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao atualizar animal!" })
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("erro no servidor")
+    }
+})
+
+// Deletar
+app.delete('/deletarAnimal', async (req, res) => {
+    try {
+        const { id_animal } = req.body
+        const [resultado] = await pool.query(`DELETE FROM animais WHERE id_animal = ?`, [id_animal])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "Animal deletado com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao deletar animal!" })
+        }
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+// ================= CADASTRO ONG ==================
+
+// Mostrar
+app.get('/mostrarOng', async (req, res) => {
+    try {
+        const [resultado] = await pool.query(`SELECT * FROM ong`)
+        res.send(resultado)
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("erro no servidor")
+    }
+})
+
+// Inserir
+app.post('/inserirOng', async (req, res) => {
+    try {
+        const { nome, telefone, endereco, cidade, estado, pix, trabalho_ofe } = req.body
+        const sql = ` INSERT INTO ong (nome, telefone, endereco, cidade, estado, pix, trabalho_ofe) VALUES (?, ?, ?, ?, ?, ?, ?)`
+        const [resultado] = await pool.query(sql, [
+            nome, telefone, endereco, cidade, estado, pix, trabalho_ofe
+        ])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "ONG cadastrada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao cadastrar ONG!" })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("erro no servidor")
+    }
+})
+
+// Atualizar
+app.put('/atualizarOng', async (req, res) => {
+    try {
+        const { id_ong, nome, telefone, endereco, cidade, estado, pix, trabalho_ofe } = req.body
+        const sql = ` UPDATE ong SET nome = ?, telefone = ?, endereco = ?, cidade = ?, estado = ?, pix = ?, trabalho_ofe = ? WHERE id_ong = ?`
+
+        const [resultado] = await pool.query(sql, [
+            nome, telefone, endereco, cidade, estado, pix, trabalho_ofe, id_ong
+        ])
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "ONG atualizada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao atualizar ONG!" })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json("erro no servidor")
+    }
+})
+
+// Deletar
+app.delete('/deletarOng', async (req, res) => {
+    try {
+        const { id_ong } = req.body
+        const [resultado] = await pool.query(`DELETE FROM ong WHERE id_ong = ?`, [id_ong]
+        )
+
+        if (resultado.affectedRows === 1) {
+            res.json({ resposta: "ONG deletada com sucesso!" })
+        } else {
+            res.json({ resposta: "Erro ao deletar ONG!" })
+        }
+    } catch (error) {
+        console.log(error)
+    }
 })
