@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrar - Entre laços</title>
+  <link rel="stylesheet" href="acesso.css">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="cabecalho">
+    <div class="cabecalho-conteudo">
+      <div class="logo">
+        <img src="logo.png" alt="logo" height="40">
+        <span>Entre laços</span>
+      </div>
+
+      <nav class="menu-links">
+        <a href="index.html">Início</a>
+        <a href="animais.html">Animais</a>
+        <a href="doar.html">Doar</a>
+        <a href="eventos.html">Eventos</a>
+        <a href="historias.html">Histórias</a>
+        <a href="dicas.html">Dicas</a>
+      </nav>
+
+      <div class="perfil-topo">
+        <a class="botao-voltar" href="index.html">Voltar ao Início</a>
+      </div>
+      
+    </div>
+  </header>
+
+  <section class="secao-acesso">
+    <div class="container-acesso">
+
+      <div class="conteudo-imagem">
+        <img src="https://i.pinimg.com/736x/28/ab/03/28ab03b5467e4af2ae0229b1aacf63d2.jpg" alt="Pet feliz">
+      </div>
+
+      <div class="card-acesso">
+        <h2>Entrar</h2>
+        <p>Acesse sua conta e continue espalhando amor</p>
+
+        <form id="formLogin">
+          <input id="login_email" type="email" placeholder="E-mail" required>
+          <input id="login_senha" type="password" placeholder="Senha" required>
+          <button type="submit" class="botao-principal">Entrar</button>
+        </form>
+
+        <span class="link-alternar"> Esqueceu sua senha? <a href="recusenha.html">Redefinir senha?</a> </span>
+        <span class="link-alternar"> Não tem conta? <a href="cadastro.html">Cadastre-se</a>
+        </span>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    document.getElementById("formLogin").addEventListener("submit", async function (e) {
+      e.preventDefault()
+
+      const dados = {
+        email: document.getElementById("login_email").value,
+        senha: document.getElementById("login_senha").value
+      }
+      try {
+        const resposta = await fetch("http://localhost:3000/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(dados)
+        })
+
+        const resultado = await resposta.json()
+
+        if (resultado.usuario) {
+          alert("Login realizado com sucesso!")
+          // Dentro da função de login da página acesso.html
+          localStorage.setItem('usuarioLogado', 'true');
+          window.location.href = "index.html"; // Volta para a home já logado
+
+        } else {
+          alert("Email ou senha inválidos!")
+        }
+
+      } catch (erro) {
+        console.log(erro)
+        alert("Erro ao conectar com o servidor")
+      }
+
+    })
+  </script>
+
+</body>
+
+</html>
