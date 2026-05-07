@@ -1,0 +1,209 @@
+/* RESET E DEFINIÇÕES GERAIS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lora', serif;
+}
+
+body {
+    background: linear-gradient(180deg, #ffdcb9 0%, #ffdae9 40%, #c2ffc5 100%);
+    color: #2b2b2b;
+    min-height: 100vh;
+    padding-top: 100px;
+    /* Espaço para o cabeçalho fixo */
+}
+
+/* ================= CABEÇALHO (ESTILO UNIFICADO) ================= */
+.cabecalho {
+    width: 100%;
+    background: #fff1e9;
+    padding: 12px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.35);
+}
+
+.cabecalho-conteudo {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo span {
+    font-weight: 700;
+    font-size: 16px;
+    color: #e67e22;
+}
+
+.menu-links {
+    background: #ffffff;
+    padding: 8px 14px;
+    border-radius: 999px;
+    display: flex;
+    gap: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.menu-links a {
+    text-decoration: none;
+    font-size: 14px;
+    color: #555;
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: 0.3s;
+}
+
+/* ================= CONTEÚDO PRINCIPAL ================= */
+.principal {
+    width: 100%;
+    max-width: 600px;
+    /* Centraliza melhor o formulário de edição */
+    margin: 0 auto 50px auto;
+    padding: 0 20px;
+}
+
+.titulo-secao {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.titulo-secao h2 {
+    font-size: 32px;
+    color: #2b2b2b;
+    margin-bottom: 6px;
+}
+
+.titulo-secao p {
+    font-size: 15px;
+    color: #6b4f35;
+}
+
+/* ================= FORMULÁRIO (BOX ÚNICO) ================= */
+.form-box {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ffdae9;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.form-box h3 {
+    font-size: 1.2rem;
+    color: #e67e22;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* ================= INPUTS E LABELS ================= */
+label {
+    display: block;
+    margin-left: 10px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6b4f35;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+    border-radius: 15px;
+    border: 1.5px solid #ffc971;
+    background-color: #fffcfb;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+    font-family: inherit;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #fa5eb4;
+    background-color: #fff;
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+input[type="file"] {
+    font-size: 12px;
+    border: 1.5px dashed #ffc971;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* ================= BOTÕES DE AÇÃO (CENTRALIZADOS) ================= */
+.form-acoes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn {
+    width: 100%;
+    max-width: 350px;
+    padding: 16px;
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #ffc971, #fa5eb4);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(250, 94, 180, 0.25);
+    transition: 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(250, 94, 180, 0.35);
+}
+
+.btn-cancelar {
+    text-decoration: none;
+    color: #f37f70;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 99px;
+    transition: 0.3s;
+}
+
+.btn-cancelar:hover {
+    background-color: #fff1e9;
+    color: #e67e22;
+}
+
+/* ================= ANIMAÇÃO ================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
