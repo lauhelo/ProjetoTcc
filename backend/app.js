@@ -633,96 +633,98 @@ app.delete('/deletarDica', autenticarToken, async (req, res) => {
     }
 })
 
-// ================= DOACAO =========================================================================================================================================
-// MOSTRAR
-app.get('/mostrarDoacao', async (req, res) => {
+// ================= DICAS =========================================================================================================================================
+
+// MOSTRAR TODAS AS DICAS
+app.get('/mostrarDicas', async (req, res) => {
     try {
-        const [resultado] = await pool.query(`SELECT * FROM doacao`)
+        // Seleciona as dicas (pode incluir um JOIN com usuario se quiser mostrar o nome de quem postou)
+        const [resultado] = await pool.query(`SELECT * FROM dicas ORDER BY id_dica DESC`)
         res.json(resultado)
     } catch (error) {
         console.log(error)
-        res.status(500).json({ erro: "erro no servidor" })
+        res.status(500).json({ erro: "erro no servidor ao buscar dicas" })
     }
 })
 
-
-// INSERIR 
-app.post('/inserirDoacao', autenticarToken, async (req, res) => {
+// INSERIR NOVA DICA (PROTEGIDO)
+app.post('/inserirDica', autenticarToken, async (req, res) => {
     try {
-        const { id_ong, tipo_doacao, descricao, data_cadastro } = req.body
+        // O id_usuario vem automaticamente do token decodificado pelo seu middleware autenticarToken
+        const id_usuario = req.usuario.id_usuario 
+        const { titulo, categoria, tipo, conteudo } = req.body
 
-        if (!id_ong || !tipo_doacao) {
-            return res.status(400).json({ erro: "Campos obrigatórios faltando" })
+        // Validação básica
+        if (!titulo || !categoria || !tipo || !conteudo) {
+            return res.status(400).json({ erro: "Todos os campos são obrigatórios" })
         }
 
-        const sql = `INSERT INTO doacao (id_ong, tipo_doacao, descricao, data_cadastro)VALUES (?, ?, ?, ?)`
+        const sql = `INSERT INTO dicas (id_usuario, titulo, categoria, tipo, conteudo) VALUES (?, ?, ?, ?, ?)`
 
         const [resultado] = await pool.query(sql, [
-            id_ong, tipo_doacao, descricao, data_cadastro
+            id_usuario, titulo, categoria, tipo, conteudo
         ])
 
         return res.json({
             resposta: resultado.affectedRows === 1
-                ? "Doação cadastrada com sucesso!"
-                : "Erro ao cadastrar doação!"
+                ? "Dica publicada com sucesso!"
+                : "Erro ao publicar dica!"
         })
 
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ erro: "erro no servidor" })
+        return res.status(500).json({ erro: "erro no servidor ao salvar dica" })
     }
 })
 
-
-// ================= ATUALIZAR (PROTEGIDO) =================
-app.put('/atualizarDoacao', autenticarToken, async (req, res) => {
+// ATUALIZAR DICA (PROTEGIDO)
+app.put('/atualizarDica', autenticarToken, async (req, res) => {
     try {
-        const { id_doacao, id_ong, tipo_doacao, descricao, data_cadastro } = req.body
+        const { id_dica, titulo, categoria, tipo, conteudo } = req.body
 
-        if (!id_doacao) {
-            return res.status(400).json({ erro: "id_doacao é obrigatório" })
+        if (!id_dica) {
+            return res.status(400).json({ erro: "id_dica é obrigatório" })
         }
 
-        const sql = `UPDATE doacao SET id_ong = ?, tipo_doacao = ?, descricao = ?, data_cadastro = ?WHERE id_doacao = ?`
+        const sql = `UPDATE dicas SET titulo = ?, categoria = ?, tipo = ?, conteudo = ? WHERE id_dica = ?`
 
         const [resultado] = await pool.query(sql, [
-            id_ong, tipo_doacao, descricao, data_cadastro, id_doacao
+            titulo, categoria, tipo, conteudo, id_dica
         ])
 
         return res.json({
             resposta: resultado.affectedRows === 1
-                ? "Doação atualizada com sucesso!"
-                : "Erro ao atualizar doação!"
+                ? "Dica atualizada com sucesso!"
+                : "Erro ao atualizar dica!"
         })
 
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ erro: "erro no servidor" })
+        return res.status(500).json({ erro: "erro no servidor ao atualizar dica" })
     }
 })
 
-
-// ================= DELETAR (PROTEGIDO) =================
-app.delete('/deletarDoacao', autenticarToken, async (req, res) => {
+// DELETAR DICA (PROTEGIDO)
+app.delete('/deletarDica', autenticarToken, async (req, res) => {
     try {
-        const { id_doacao } = req.body
+        const { id_dica } = req.body
 
-        if (!id_doacao) {
-            return res.status(400).json({ erro: "id_doacao é obrigatório" })
+        if (!id_dica) {
+            return res.status(400).json({ erro: "id_dica é obrigatório" })
         }
 
         const [resultado] = await pool.query(
-            `DELETE FROM doacao WHERE id_doacao = ?`, [id_doacao])
+            `DELETE FROM dicas WHERE id_dica = ?`, [id_dica])
 
         return res.json({
             resposta: resultado.affectedRows === 1
-                ? "Doação deletada com sucesso!"
-                : "Erro ao deletar doação!"
+                ? "Dica removida com sucesso!"
+                : "Erro ao remover dica!"
         })
 
     } catch (error) {
         console.log(error)
-        return res.status(500).json({ erro: "erro no servidor" })
+        return res.status(500).json({ erro: "erro no servidor ao deletar dica" })
     }
 })
 
