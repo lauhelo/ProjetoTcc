@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Dica - Entre Laços</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="cadDicas.css">
+</head>
+<body>
+<!---https://i.pinimg.com/1200x/5c/11/a5/5c11a58dfac731d2833e48211d9dc9f6.jpg 
+
+
+IMAGEM GATO PARA COLOCAR NO LADO DIREITO DO CONATINER
+
+FAZER O BACK FUNCIONAR COM O FRONT
+
+FAZER TER UMA "SOMBRA" PEQUENA AO REDOR DE CADA CATEGORIA PARA FACILITAR O ACESSO
+
+-->
+    <header class="cabecalho">
+        <div class="cabecalho-conteudo">
+            <div class="logo">
+                <img src="logo.png" alt="logo" height="35">
+                <span>Entre Laços</span>
+            </div>
+            <nav class="menu-links">
+                <a href="index.html">Início</a>
+                <a href="animais.html">Animais</a>
+                <a href="doar.html">Doar</a>
+                <a href="eventos.html">Eventos</a>
+                <a href="historias.html">Histórias</a>
+                <a href="dicas.html" class="ativo">Dicas</a>
+            </nav>
+            <div class="perfil-topo">
+                <a href="dicas.html" class="nome-usuario">Cancelar</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container-principal">
+        <div class="caixa-cadastro">
+            <h2>Nova Dica</h2>
+            <form id="formCadDica">
+                <div class="campo-grupo">
+                    <label for="titulo">Título</label>
+                    <input type="text" id="titulo" placeholder="Ex: Banho em Gatos" required>
+                </div>
+
+                <div class="campo-grupo">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="Alimentação">Alimentação</option>
+                        <option value="Saúde">Saúde</option>
+                        <option value="Passeio">Passeio</option>
+                        <option value="Bem-estar">Bem-estar</option>
+                        <option value="Higiene">Higiene</option>
+                    </select>
+                </div>
+
+                <div class="campo-grupo">
+                    <label for="tipo">Para qual Pet?</label>
+                    <select id="tipo" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="Cachorro">Cachorro</option>
+                        <option value="Gato">Gato</option>
+                        <option value="Exótico">Exótico</option>
+                        <option value="Geral">Geral</option>
+                    </select>
+                </div>
+
+                <div class="campo-grupo">
+                    <label for="conteudo">Conteúdo</label>
+                    <textarea id="conteudo" placeholder="Escreva os detalhes aqui..." rows="5" required></textarea>
+                </div>
+
+                <button type="submit" class="botao-enviar">Publicar Agora</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById("formCadDica").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const token = localStorage.getItem("token");
+            
+            if (!token) {
+                alert("Você precisa estar logado para postar dicas!");
+                window.location.href = "login.html"; 
+                return;
+            }
+
+            const dados = {
+                titulo: document.getElementById("titulo").value,
+                categoria: document.getElementById("categoria").value,
+                tipo: document.getElementById("tipo").value,
+                conteudo: document.getElementById("conteudo").value
+            };
+
+            try {
+                const response = await fetch("http://localhost:3000/inserirDica", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(dados)
+                });
+
+                if (response.ok) {
+                    alert("Dica publicada com sucesso! 🐾");
+                    window.location.href = "dicas.html";
+                } else {
+                    const errorData = await response.json();
+                    alert("Erro: " + (errorData.message || "Não foi possível salvar."));
+                }
+            } catch (error) {
+                console.error("Erro na conexão:", error);
+                alert("Servidor offline ou erro de rede.");
+            }
+        });
+    </script>
+</body>
+</html>
