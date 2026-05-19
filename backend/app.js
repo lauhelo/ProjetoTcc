@@ -23,6 +23,7 @@ app.listen(porta, () => {
     console.log(`Swagger em: http://localhost:${porta}/api-docs`)
 })
 
+
 function autenticarToken(req, res, next) {
     const authHeader = req.headers.authorization;
 
@@ -37,12 +38,21 @@ function autenticarToken(req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET || "pet"
+        );
+
         req.user = decoded;
+
         next();
+
     } catch (err) {
         console.log("JWT ERROR:", err.message);
-        return res.status(401).json({ erro: "Token inválido" });
+
+        return res.status(401).json({
+            erro: "Token inválido"
+        });
     }
 }
 
