@@ -33,6 +33,12 @@ body {
     justify-content: space-between;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
 .logo span {
     font-weight: 700;
     font-size: 18px;
@@ -82,22 +88,44 @@ body {
     color: #ffffff;
 }
 
-/* CONTEÚDO PRINCIPAL */
+/* CONTEÚDO PRINCIPAL (Alinha os blocos soltos lado a lado) */
 .container-principal {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
+    align-items: stretch; /* Garante que ambos tenham alturas equilibradas */
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    gap: 40px; /* Distância entre a foto solta e a caixa branca */
 }
 
-.caixa-cadastro {
-    background: #fff1e9;
+/* BLOCO DA IMAGEM ISOLADO */
+.lado-imagem {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lado-imagem img {
     width: 100%;
     max-width: 500px;
-    padding: 35px;
-    border-radius: 30px;
+    height: 100%;
+    min-height: 550px;
+    object-fit: cover;
+    border-radius: 40px; /* Bordas bem arredondadas como na foto */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ffa3bf;
+}
+
+/* CAIXA BRANCA DE CADASTRO ISOLADA */
+.caixa-cadastro {
+    background: #ffffff; /* Fundo branco limpo igual ao print */
+    flex: 1;
+    width: 100%;
+    max-width: 500px;
+    padding: 40px;
+    border-radius: 40px; /* Bordas bem arredondadas combinando com a imagem */
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
 
 .caixa-cadastro h2 {
@@ -124,10 +152,11 @@ input, select, textarea {
     width: 100%;
     padding: 14px;
     border-radius: 15px;
-    border: 1px solid #ffa3bf;
+    border: 1px solid #ffccdb;
     outline: none;
     font-size: 14px;
     background: white;
+    transition: 0.2s;
 }
 
 textarea {
@@ -139,7 +168,7 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 5px rgba(230, 126, 34, 0.2);
 }
 
-/* BOTÃO ENVIAR */
+/* BOTÃO ENVIAR (Estilo Degradê) */
 .botao-enviar {
     width: 100%;
     padding: 16px;
@@ -150,12 +179,32 @@ input:focus, select:focus, textarea:focus {
     font-weight: 700;
     font-size: 16px;
     cursor: pointer;
-    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.35);
+    box-shadow: 0 10px 25px rgba(230, 126, 34, 0.25);
     transition: 0.3s;
     margin-top: 10px;
 }
 
 .botao-enviar:hover {
     transform: translateY(-3px);
-    filter: brightness(1.1);
+    filter: brightness(1.05);
+    box-shadow: 0 12px 28px rgba(230, 126, 34, 0.35);
+}
+
+/* RESPONSIVIDADE (Para telas de celular/tablets empilharem perfeitamente) */
+@media (max-width: 850px) {
+    .container-principal {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+    }
+    
+    .lado-imagem, .caixa-cadastro {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .lado-imagem img {
+        min-height: 350px;
+        height: 350px;
+    }
 }
