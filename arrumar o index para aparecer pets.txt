@@ -1,0 +1,16 @@
+ Arrumar o index para aparecer pets que já estão cadastrados - (Filtrar os pets para na sugestão do index aparecer os pets perto de mim) - (Filtrar ongs que estão perto de mim (para aparecer as sugestões de ong por perto e aparecer no google maps).
+
+Filtrar os pets que estão em necessidades urgentes para aparecer no index OU fazer uma página apenas para as necessidades urgentes.
+
+Fazer a página eventos para fazer login com o index.
+
+Arrumar foto principal do index (foto real).
+
+Corrigir dados da ong que não aparece no conhecer(telefone, chave pix, etc)- na parte dos animais
+
+alterar cores do status que não funciona(urgente colocar uma sombra vermelha)- na parte dos animais
+
+arrumar cores das dicas (dica p suade uma sombra verde ou a caixa)
+
+fazer a parte do maps (eventos perto de mim)
+
